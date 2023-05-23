@@ -1,0 +1,59 @@
+# Create an App Service app with deployment from GitHub
+# set -e # exit if error
+# Variable block
+let "randomIdentifier=$RANDOM"
+location="East US"
+resourceGroup="JumpVM-rg"
+tag="deploy-docker"
+appServicePlan="ASP-JumpVMrg-$randomIdentifier"
+webapp="owasp-main-$randomIdentifier"
+
+# Create a resource group.
+echo "Creating $resourceGroup in "$location"..."
+az group create --name $resourceGroup --location "$location" --tag $tag
+
+# Create an App Service plan in 'B1' tier.
+echo "Creating $appServicePlan"
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku B1 --is-linux
+
+# Create a web app.
+echo "Creating $webapp"
+az webapp create --name $webapp --resource-group $resourceGroup --plan $appServicePlan -i bkimminich/juice-shop:latest
+
+# Use curl to see the web app.
+site="http://$webapp.azurewebsites.net"
+echo $site
+curl "$site" # Optionally, copy and paste the output of the previous command into a browser to see the web app
+
+# Create an App Service app with deployment from GitHub
+# set -e # exit if error
+# Variable block
+let "randomIdentifier=$RANDOM"
+location="West US2"
+resourceGroup="JumpVM-rg"
+tag="deploy-docker"
+appServicePlan="ASP-JumpVMrg-$randomIdentifier"
+webapp="owasp-main-$randomIdentifier"
+
+# Create a resource group.
+echo "Creating $resourceGroup in "$location"..."
+az group create --name $resourceGroup --location "$location" --tag $tag
+
+# Create an App Service plan in 'B1' tier.
+echo "Creating $appServicePlan"
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku B1 --is-linux
+
+# Create a web app.
+echo "Creating $webapp"
+az webapp create --name $webapp --resource-group $resourceGroup --plan $appServicePlan -i bkimminich/juice-shop:latest
+
+# Use curl to see the web app.
+site="http://$webapp.azurewebsites.net"
+echo $site
+curl "$site" # Optionally, copy and paste the output of the previous command into a browser to see the web app
+
+# Create FrontDoor
+az afd profile create \
+    --profile-name Webapp-Contoso-AFD \
+    --resource-group $resourceGroup \
+    --sku Standard_AzureFrontDoor

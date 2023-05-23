@@ -51,9 +51,3 @@ az webapp create --name $webapp --resource-group $resourceGroup --plan $appServi
 site="http://$webapp.azurewebsites.net"
 echo $site
 curl "$site" # Optionally, copy and paste the output of the previous command into a browser to see the web app
-
-# Create FrontDoor
-az afd profile create \
-    --profile-name Webapp-Contoso-AFD \
-    --resource-group $resourceGroup \
-    --sku Standard_AzureFrontDoor
